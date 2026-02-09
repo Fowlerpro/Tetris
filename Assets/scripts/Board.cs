@@ -17,6 +17,13 @@ public class Board : MonoBehaviour
     public Vector2Int startPostion;
 
     public float dropInterval = 0.5f;
+    public float abilityDropInterval = 0.8f;
+    float lockedDropInterval;
+    // speed that the ability drops items at, Should be slower
+    bool abilityActive = false;
+    public float abilityTimer = 4f;
+    float abilityTime = 0f;
+    //time ability lasts
 
     float dropTime = 0.0f;
 
@@ -46,6 +53,18 @@ public class Board : MonoBehaviour
     private void Update()
     {
         if (tetrisManager.gameOver) return;
+
+        if (abilityActive)
+        {
+            abilityTime -= Time.deltaTime;
+            if (abilityTimer <= 0f)
+            {
+                abilityActive = false;
+                dropInterval = lockedDropInterval;
+                //when the timer of the ability hits 0 stop the ability
+                Debug.Log("Ability End");
+            }
+        }
 
         dropTime += Time.deltaTime;
 
@@ -185,7 +204,20 @@ public class Board : MonoBehaviour
             //if a line was cleared and the active piece was Y slows drop intreval then after the next piece is placed then reset
             if (activePiece != null && activePiece.data.tetronimo == Tetronimo.Y)
             {
-
+                Debug.Log("Y ability Activated");
+                //Debug log to test if the ability activated
+                if (!abilityActive)
+                {
+                    lockedDropInterval = dropInterval;
+                    //when the ability is not active reset the drop interval before changing it
+                }
+                
+                dropInterval = abilityDropInterval;
+                // slows the time down of the drop intreval
+                abilityTime = abilityTimer;
+                //start the timer
+                abilityActive = true;
+                //activates the ability
             }
         }
         int score = tetrisManager.CalculateScore(destroyedLines.Count);
