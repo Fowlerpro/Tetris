@@ -21,7 +21,7 @@ public class Board : MonoBehaviour
     float lockedDropInterval;
     // speed that the ability drops items at, Should be slower
     bool abilityActive = false;
-    public float abilityTimer = 4f;
+    public float abilityTimer = 8f;
     float abilityTime = 0f;
     //time ability lasts
 
@@ -57,7 +57,7 @@ public class Board : MonoBehaviour
         if (abilityActive)
         {
             abilityTime -= Time.deltaTime;
-            if (abilityTimer <= 0f)
+            if (abilityTime <= 0f)
             {
                 abilityActive = false;
                 dropInterval = lockedDropInterval;
