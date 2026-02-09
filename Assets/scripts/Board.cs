@@ -158,7 +158,8 @@ public class Board : MonoBehaviour
         return true;
     }
 
-    public void CheckBoard()
+    public int CheckBoard()
+        //Changed the Void to be an Int so we can return the Cleared lines
     {
         //checks if line is full and clears it
         List<int> destroyedLines = new List<int>();
@@ -177,10 +178,20 @@ public class Board : MonoBehaviour
             ShiftRowsDown(y - rowsShiftedDown);
             rowsShiftedDown++;
         }
+        int linesCleared = destroyedLines.Count;
+        //Counts if a line was cleared
+        if (linesCleared > 0)
+        {
+            //if a line was cleared and the active piece was Y slows drop intreval then after the next piece is placed then reset
+            if (activePiece != null && activePiece.data.tetronimo == Tetronimo.Y)
+            {
 
-
+            }
+        }
         int score = tetrisManager.CalculateScore(destroyedLines.Count);
         tetrisManager.ChangeScore(score);
+
+        return linesCleared;
     }
 
     void ShiftRowsDown(int clearedRow)
